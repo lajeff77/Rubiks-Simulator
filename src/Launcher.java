@@ -4,6 +4,8 @@
  * <p>This is the starting point of the program.</p>
  *
  * @version 0.0.0
+ * <p>created: 4/24/19</p>
+ * <p>updated: 4/24/19</p>
  * @author Lauryn Jefferson
  */
 public class Launcher {
@@ -17,7 +19,8 @@ public class Launcher {
      */
     public static void main(String[] args)
     {
-        System.out.println("Lauryn Jefferson, Rubik's Simulator ver 0.0.0");
+        //System.out.println("Lauryn Jefferson, Rubik's Simulator ver 0.0.0");
+        Window w = new Window(args);
     }
 }
 
