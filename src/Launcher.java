@@ -3,7 +3,7 @@
  *
  * <p>This is the starting point of the program.</p>
  *
- * @version 0.0.0
+ * @version 0.0.1
  * <p>created: 4/24/19</p>
  * <p>updated: 4/24/19</p>
  * @author Lauryn Jefferson

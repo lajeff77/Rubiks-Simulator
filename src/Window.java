@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  *
  * <p>This class controls the window and user interfacing aspects of the application.</p>
  *
- * @version 0.0.1
+ * @version 0.0.2
  * <p>created: 4/24/19</p>
  * <p>updated: 4/25/19</p>
  * @author Lauryn Jefferson
