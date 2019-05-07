@@ -1,16 +1,14 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
-
 /**
  * <h1>Cube Class</h1>
  *
  * <p>This is the cube class in which we will virtually represent the cube.</p>
  *
- * @version 0.0.2
+ * @version 0.0.3
  * <p>created: 4/24/19</p>
- * <p>updated: 5/3/19</p>
+ * <p>updated: 5/7/19</p>
  * @author Lauryn Jefferson
  */
 public class Cube {
@@ -26,7 +24,7 @@ public class Cube {
     private int faceCount;
 
     //objects
-    ArrayList<Face> faces;
+    private Face curr,left,right,top,bottom,opp;//nodes to represent orientation of the cube
 
     /**
      * <h2>Cube() constructor</h2>
@@ -40,8 +38,15 @@ public class Cube {
         xDim = yDim = 3;
         arc = 10;
         padding = 2;
-        faces = new ArrayList<Face>(faceCount);
-        faces.add(new Face());
+
+
+        //set all the face nodes
+        curr = new Face(4);
+        left = new Face(2);
+        right = new Face(5);
+        top = new Face(0);
+        bottom = new Face(3);
+        opp = new Face(1);
     }
 
     /**
@@ -53,10 +58,92 @@ public class Cube {
      */
     public void render(GraphicsContext gc)
     {
-        for(Face f: faces)
-            f.drawFace(gc);
+        curr.drawFace(gc);
     }
 
+    /**
+     * <h2>xMove() method</h2>
+     *
+     * <p>This method rotates the cube to the bottom face.</p>
+     */
+    public void xMove()
+    {
+        Face temp = curr;
+        curr = bottom;
+        bottom = opp;
+        opp = top;
+        top = temp;
+    }
+
+    /**
+     * <h2>xPrimeMove() method</h2>
+     *
+     * <p>This method rotates the cube to the top face.</p>
+     */
+    public void xPrimeMove()
+    {
+        Face temp = curr;
+        curr = top;
+        top = opp;
+        opp = bottom;
+        bottom = temp;
+    }
+
+    /**
+     * <h2>yMove() method</h2>
+     *
+     * <p>Thie method rotates the cube to the right face.</p>
+     */
+    public void yMove()
+    {
+        Face temp = curr;
+        curr = right;
+        right = opp;
+        opp = left;
+        left = temp;
+    }
+
+    /**
+     * <h2>yPrimeMove() method</h2>
+     *
+     * <p>This method rotates the cube to the left face.</p>
+     */
+    public void yPrimeMove()
+    {
+        Face temp = curr;
+        curr = left;
+        left = opp;
+        opp = right;
+        right = temp;
+    }
+
+    /**
+     * <h2>zMove() method</h2>
+     *
+     * <p>This method rotates the right, top, left, and bottom faces to the right.</p>
+     */
+    public void zMove()
+    {
+        Face temp = left;
+        left = bottom;
+        bottom = right;
+        right = top;
+        top = temp;
+    }
+
+    /**
+     * <h2>zMove() method</h2>
+     *
+     * <p>This method rotates the right, top, left, and bottom faces to the left.</p>
+     */
+    public void zPrimeMove()
+    {
+        Face temp = left;
+        left = top;
+        top = right;
+        right = bottom;
+        bottom = temp;
+    }
 
     /**
      * <h1>Face Class</h1>
@@ -65,17 +152,17 @@ public class Cube {
      */
     class Face
     {
+        //objects
         private int[][] colors;
-        //Faces nodes to be implemented later
-        /*private Face left;
-        private Face right;
-        private Face top;
-        private Face bottom;*/
 
         public Face()
         {
-            solidFace(4);
-            //randomFace();
+            this(4);
+        }
+
+        public Face(int col)
+        {
+            solidFace(col);
         }
 
         /**
@@ -122,12 +209,15 @@ public class Cube {
             int cx = 0;
             int cy = 0;
 
+            //the black background for the cube
+            gc.setFill(Color.BLACK);
             gc.fillRoundRect(width/2 - cWidth/2 - (padding*xDim),height/2 - cHeight/2 - (padding*yDim),cWidth + padding*5, cHeight + padding*5,arc,arc);
 
             for(double x = width/2 - cWidth/2 - (padding*xDim)/2; x < width/2 + cWidth/2 + (padding*xDim)/2; x+= (cWidth/xDim) + padding)
             {
                 for(double y = height/2 - cHeight/2 - (padding*yDim)/2; y < height/2 + cHeight/2 + (padding*yDim)/2; y+= (cHeight/yDim) + padding)
                 {
+                    //draw each square of the cube according to their color
                     gc.setFill(COLORS[colors[cx][cy]]);
                     gc.fillRoundRect(x,y, cWidth/xDim,cHeight/yDim,arc,arc);
                     cy++;
