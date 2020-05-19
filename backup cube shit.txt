@@ -1,0 +1,82 @@
+double width = gc.getCanvas().getWidth();
+            double height = gc.getCanvas().getHeight();
+            int cx = 0;
+            int cy = 0;
+
+            //ArrayList<Point2D> frontPoints = new ArrayList<Point2D>(4);
+
+            //the black background for the cube
+            gc.setFill(Color.BLACK);
+            gc.fillRoundRect(width/2 - cWidth/2 - (padding*xDim),height/2 - cHeight/2 - (padding*yDim),cWidth + padding*xDim + padding*5, cHeight + padding*yDim + padding*5,arc,arc);
+            for(double x = width/2 - cWidth/2 - (padding*xDim)/2; x < width/2 + cWidth /2 + (padding*xDim)/2; x+= (cWidth/xDim) + padding);
+            
+            /*double bx = width/2 - cWidth/2 - (padding*xDim);
+            double by = height/2 - cHeight/2 - (padding*yDim);
+            double bw = cWidth + padding*xDim + padding*2;
+            double bh0 = cHeight/3 + padding;
+            double bh1 = cHeight + padding*yDim + padding*2;
+            double bh2 = cHeight + padding*yDim + padding*2 + cHeight/3;
+            double bx2 = bx+(bw/2);*/
+            //gc.setFill(Color.GREEN);
+            //frontPoints.addAll(new Point2D.Double(bx,by), new Point2D.dou(), new Poinr);
+
+           
+             /*//gc.setFill(Color.BLUE);
+            gc.fillPolygon(new double[]{bx,bx+(bw/2),bx+(bw/2),bx},new double[]{by,by+bh0, by+bh2, by+bh1},4);
+            //gc.setFill(Color.RED);
+            gc.fillPolygon(new double[]{bx2,bx2+(bw/2),bx2+(bw/2),bx2},new double[]{by+bh0,by, by+bh1, by+bh2},4);
+            //gc.setFill(Color.YELLOW);
+            gc.fillPolygon(new double[]{bx,bx2,bx+bw,bx2}, new double[]{by,by-bh0,by,by+bh0},4);*/
+
+            /*gc.setFill(Color.GREEN);
+            gc.fillPolygon(new double[]{bx,bx+(bw/6),bx+(bw/6),bx},new double[]{by,by+bh0/3, by+bh2*5/6, by+bh1},4);
+
+            gc.setFill(Color.ORANGE);
+            gc.fillPolygon(new double[]{bx,bx+(bw/2),bx+(bw/2),bx},new double[]{by,by+bh0, by+(bh2/2), by+(bh1/3)},4);
+            //gc.setFill(Color.BLUE);
+
+            gc.setFill(Color.PURPLE);
+            gc.fillPolygon(new double[]{bx,bx+(bw/6),bx+(bw/6),bx}, new double[]{by,by+bh0/3, by+(bh2/3), by+(bh1/3)},4);
+            */
+
+            //for(double x = width/2 - cWidth/2 - (padding*xDim)/2; x < width/2 + cWidth/2 + (padding*xDim)/2; x+= (cWidth/xDim) + padding)
+            //for(double y = height/2 - cHeight/2 - (padding*yDim)/2 + yh2; y < height/2 + cHeight/2 + (padding*yDim)/2; y+= (cHeight/yDim) + padding)
+            //draws front face
+            /*
+            gc.setFill(Color.PURPLE);
+
+            double dw = bw/6;
+            double dh = bh1/3;
+            int i = 0;
+            int j = 0;
+            for(double dx = bx; dx < bx+(bw/2); dx += dw)
+            {
+                double sy = by + (i++ * (dh/3));
+                j = 0;
+                for(double dy = sy; dy < by+bh1; dy += dh)
+                {
+                    //Polygon p = new Polygon(new double[]{dx ,dx + dw ,dx+ dw, dx, dy,dy+bh0/3, dy+(bh2/3), dy+(bh1/3)});
+                    gc.setFill(COLORS[curr.colors[0][0]]);
+                    gc.fillPolygon(new double[]{dx ,dx + dw ,dx+ dw, dx}, new double[]{dy,dy+bh0/3, dy+(bh2/3), dy+(bh1/3)},4);
+                }
+            }*/
+          /*  for(double x = bx; x < bx+(bw/(2 * xDim)); x+= (bw/(2*xDim * xDim)))//+ padding)
+            {
+
+                for(double y = by; y < by + bh0 ; y+= bh0/(yDim* yDim))//+ padding)
+                {
+                    oneTime++;
+                    //draw each square of the cube according to their color
+                    //gc.setFill(COLORS[colors[cx][cy]]);
+                    //gc.fillRoundRect(x,y, cWidth/xDim,cHeight/yDim,arc,arc);
+                    gc.fillPolygon(new double[]{x,x+cWidth/xDim, x+cWidth/xDim,x}, new double[]{y,y+cHeight/(yDim*yDim), y+cHeight+cHeight/(yDim*yDim), y+cHeight/(yDim)},4);
+                    cy++;
+                   // if(oneTime >= 1)
+                        //break;
+                }
+
+                yh2+= cHeight;
+                cx++;
+                cy = 0;
+            }*/
+        }

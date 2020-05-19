@@ -12,7 +12,6 @@ import javafx.scene.canvas.GraphicsContext;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
@@ -20,9 +19,9 @@ import javafx.stage.Stage;
  *
  * <p>This class controls the window and user interfacing aspects of the application.</p>
  *
- * @version 0.0.3
+ * @version 0.0.4
  * <p>created: 4/24/19</p>
- * <p>updated: 5/7/19</p>
+ * <p>updated: 5/19/20</p>
  * @author Lauryn Jefferson
  */
 public class Window extends Application {
@@ -75,7 +74,7 @@ public class Window extends Application {
         HBox hBox = new HBox();
         hBox.setPadding(new Insets(15, 12, 15, 12));
         hBox.setSpacing(10);
-        Canvas canvas = new Canvas(800, 500);
+        Canvas canvas = new Canvas(1000, 700);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         render(gc);
 

@@ -6,22 +6,23 @@ import javafx.scene.paint.Color;
  *
  * <p>This is the cube class in which we will virtually represent the cube.</p>
  *
- * @version 0.0.3
+ * @version 0.0.4
  * <p>created: 4/24/19</p>
- * <p>updated: 5/7/19</p>
+ * <p>updated: 5/19/20</p>
  * @author Lauryn Jefferson
  */
 public class Cube {
 
     //constants
     private final Color[] COLORS = {Color.WHITE,Color.ORANGE, Color.GREEN, Color.YELLOW, Color.RED, Color.BLUE};
-
     //variables
     private double cWidth, cHeight;
     private int xDim, yDim;
     private double arc;
     private int padding;
     private int faceCount;
+    private double faceWidth, faceLength;
+    private double cubieWidth, cubieHeight;
 
     //objects
     private Face curr,left,right,top,bottom,opp;//nodes to represent orientation of the cube
@@ -33,20 +34,25 @@ public class Cube {
      */
     public Cube()
     {
-        cWidth = cHeight = 300;
+        cWidth = 150;
+        cHeight = 150;
         faceCount = 1;
         xDim = yDim = 3;
         arc = 10;
         padding = 2;
+        faceWidth = padding*(xDim -1)+ padding*3 + cWidth;
+        faceLength = padding*(yDim -1)+ padding*3 + cHeight;
+        cubieWidth = (cWidth / xDim);
+        cubieHeight = (cHeight / yDim);
 
 
         //set all the face nodes
-        curr = new Face(4);
-        left = new Face(2);
-        right = new Face(5);
+        curr = new Face(2);
+        left = new Face(1);
+        right = new Face(4);
         top = new Face(0);
         bottom = new Face(3);
-        opp = new Face(1);
+        opp = new Face(5);
     }
 
     /**
@@ -58,7 +64,8 @@ public class Cube {
      */
     public void render(GraphicsContext gc)
     {
-        curr.drawFace(gc);
+        //curr.drawFace(gc);
+        drawCube(gc);
     }
 
     /**
@@ -198,33 +205,56 @@ public class Cube {
         /**
          * <h2>drawFace() method</h2>
          *
-         * <p>This method draws the current side of the cube that is being faced to the screen using a javaFX GraphicsContext object.</p>
+         * <p>This method draws the current face of the cube that is being faced to the screen using a javaFX GraphicsContext object.</p>
          *
          * @param gc graphics context of where you want to draw to
          */
-        private void drawFace(GraphicsContext gc)
-        {
-            double width = gc.getCanvas().getWidth();
-            double height = gc.getCanvas().getHeight();
+        public void drawFace(GraphicsContext gc, double startX, double startY) {
+            //vars to keep track of the color of the cubie
             int cx = 0;
             int cy = 0;
 
             //the black background for the cube
             gc.setFill(Color.BLACK);
-            gc.fillRoundRect(width/2 - cWidth/2 - (padding*xDim),height/2 - cHeight/2 - (padding*yDim),cWidth + padding*5, cHeight + padding*5,arc,arc);
+            gc.fillRoundRect(startX, startY, cWidth + padding * 4 + padding *(xDim-1), cHeight + padding * 4 + padding*(yDim-1), arc, arc);
 
-            for(double x = width/2 - cWidth/2 - (padding*xDim)/2; x < width/2 + cWidth/2 + (padding*xDim)/2; x+= (cWidth/xDim) + padding)
-            {
-                for(double y = height/2 - cHeight/2 - (padding*yDim)/2; y < height/2 + cHeight/2 + (padding*yDim)/2; y+= (cHeight/yDim) + padding)
-                {
+            for (double x = startX + padding*2; x < startX + faceWidth; x += cubieWidth + padding) {
+                for (double y = startY + padding*2; y < startY + faceLength; y += cubieHeight + padding) {
                     //draw each square of the cube according to their color
                     gc.setFill(COLORS[colors[cx][cy]]);
-                    gc.fillRoundRect(x,y, cWidth/xDim,cHeight/yDim,arc,arc);
+                    gc.fillRoundRect(x, y, cWidth / xDim, cHeight / yDim, arc, arc);
                     cy++;
                 }
                 cx++;
                 cy = 0;
             }
         }
+    }
+
+    /**
+     * <h2>drawCube() method</h2>
+     *
+     * <p>This method draws all of the faces in the cube using a JavaFX GraphicsContext object.</p>
+     *
+     * @param gc graphics context of where you want to draw to
+     */
+    private void drawCube(GraphicsContext gc)
+    {
+        //set up starting coords
+        double midX = gc.getCanvas().getWidth()/2;
+        double midY = gc.getCanvas().getHeight()/2;
+        double midCubeX = cWidth/2;
+        double midCubeY = cHeight/2;
+        double currStartX = midX - midCubeX;//- (padding * xDim) / 2;
+        double currStartY = midY - midCubeY;//- (padding * yDim) / 2;
+
+        //draw cube by face
+        curr.drawFace(gc,currStartX,currStartY);
+        left.drawFace(gc, currStartX - faceWidth - padding*2, currStartY);
+        right.drawFace(gc, currStartX + faceWidth + padding*2, currStartY);
+        opp.drawFace(gc, currStartX + faceWidth*2 + padding*4, currStartY);
+        top.drawFace(gc, currStartX, currStartY - faceLength - padding*2);
+        bottom.drawFace(gc, currStartX, currStartY + faceLength + padding*2);
+
     }
 }
