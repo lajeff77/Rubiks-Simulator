@@ -6,15 +6,15 @@ import javafx.scene.paint.Color;
  *
  * <p>This is the cube class in which we will virtually represent the cube.</p>
  *
- * @version 0.0.4
+ * @version 0.0.5
  * <p>created: 4/24/19</p>
- * <p>updated: 5/19/20</p>
+ * <p>updated: 5/21/20</p>
  * @author Lauryn Jefferson
  */
 public class Cube {
 
     //constants
-    private final Color[] COLORS = {Color.WHITE,Color.ORANGE, Color.GREEN, Color.YELLOW, Color.RED, Color.BLUE};
+    private final Color[] COLORS = {Color.WHITE, Color.ORANGE, Color.GREEN, Color.YELLOW, Color.RED, Color.BLUE};
     //variables
     private double cWidth, cHeight;
     private int xDim, yDim;
@@ -25,23 +25,22 @@ public class Cube {
     private double cubieWidth, cubieHeight;
 
     //objects
-    private Face curr,left,right,top,bottom,opp;//nodes to represent orientation of the cube
+    private Face curr, left, right, top, bottom, opp;//nodes to represent orientation of the cube
 
     /**
      * <h2>Cube() constructor</h2>
      *
      * <p>Here is where the cube is set up for use.</p>
      */
-    public Cube()
-    {
+    public Cube() {
         cWidth = 150;
         cHeight = 150;
         faceCount = 1;
         xDim = yDim = 3;
         arc = 10;
         padding = 2;
-        faceWidth = padding*(xDim -1)+ padding*3 + cWidth;
-        faceLength = padding*(yDim -1)+ padding*3 + cHeight;
+        faceWidth = padding * (xDim - 1) + padding * 3 + cWidth;
+        faceLength = padding * (yDim - 1) + padding * 3 + cHeight;
         cubieWidth = (cWidth / xDim);
         cubieHeight = (cHeight / yDim);
 
@@ -62,8 +61,7 @@ public class Cube {
      *
      * @param gc graphics context of where you want to draw to
      */
-    public void render(GraphicsContext gc)
-    {
+    public void render(GraphicsContext gc) {
         //curr.drawFace(gc);
         drawCube(gc);
     }
@@ -71,66 +69,85 @@ public class Cube {
     /**
      * <h2>xMove() method</h2>
      *
-     * <p>This method rotates the cube to the bottom face.</p>
+     * <p>This method rotates the cube clockwise by 90 degrees in the x direction.</p>
      */
-    public void xMove()
-    {
+    public void xMove() {
         Face temp = curr;
         curr = bottom;
         bottom = opp;
         opp = top;
         top = temp;
+
+        bottom.clockwiseTwist();
+        bottom.clockwiseTwist();
+
+        opp.clockwiseTwist();
+        opp.clockwiseTwist();
+
+        right.clockwiseTwist();
+        left.counterClockwiseTwist();
     }
 
     /**
      * <h2>xPrimeMove() method</h2>
      *
-     * <p>This method rotates the cube to the top face.</p>
+     * <p>This method rotates the cube counter-clockwise by 90 degrees in the x direction.</p>
      */
-    public void xPrimeMove()
-    {
+    public void xPrimeMove() {
         Face temp = curr;
         curr = top;
         top = opp;
         opp = bottom;
         bottom = temp;
+
+        top.clockwiseTwist();
+        top.clockwiseTwist();
+
+        opp.clockwiseTwist();
+        opp.clockwiseTwist();
+
+        right.counterClockwiseTwist();
+        left.clockwiseTwist();
     }
 
     /**
      * <h2>yMove() method</h2>
      *
-     * <p>Thie method rotates the cube to the right face.</p>
+     * <p>This method rotates the cube clockwise by 90 degrees in the y direction.</p>
      */
-    public void yMove()
-    {
+    public void yMove() {
         Face temp = curr;
         curr = right;
         right = opp;
         opp = left;
         left = temp;
+
+        top.clockwiseTwist();
+        bottom.counterClockwiseTwist();
     }
 
     /**
      * <h2>yPrimeMove() method</h2>
      *
-     * <p>This method rotates the cube to the left face.</p>
+     * <p>This method rotates the cube counter-clockwise by 90 degrees in the y direction.</p>
      */
-    public void yPrimeMove()
-    {
+    public void yPrimeMove() {
         Face temp = curr;
         curr = left;
         left = opp;
         opp = right;
         right = temp;
+
+        top.counterClockwiseTwist();
+        bottom.clockwiseTwist();
     }
 
     /**
      * <h2>zMove() method</h2>
      *
-     * <p>This method rotates the right, top, left, and bottom faces to the right.</p>
+     * <p>This method rotates the cube clockwise by 90 degrees in the z direction.</p>
      */
-    public void zMove()
-    {
+    public void zMove() {
         Face temp = left;
         left = bottom;
         bottom = right;
@@ -141,15 +158,191 @@ public class Cube {
     /**
      * <h2>zMove() method</h2>
      *
-     * <p>This method rotates the right, top, left, and bottom faces to the left.</p>
+     * <p>This method rotates the cube counter-clockwise by 90 degrees in the z direction.</p>
      */
-    public void zPrimeMove()
-    {
+    public void zPrimeMove() {
         Face temp = left;
         left = top;
         top = right;
         right = bottom;
         bottom = temp;
+    }
+
+    /**
+     * <h2>rMove() method</h2>
+     *
+     * <p>This method turns the right face clockwise by 90 degrees.</p>
+     */
+    public void rMove() {
+        bottom.swapCol(2,curr);
+        opp.swapCol(0,2,bottom);
+        top.swapCol(2,0,opp);
+        bottom.transposeCol(2);
+        opp.transposeCol(0);
+        right.clockwiseTwist();
+    }
+
+    /**
+     * <h2>rPrimeMove() method</h2>
+     *
+     * <p>This method turns the right face counter-clockwise by 90 degrees.</p>
+     */
+    public void rPrimeMove()
+    {
+        curr.swapCol(2,top);
+        top.swapCol(2,0,opp);
+        opp.swapCol(0,2,bottom);
+        top.transposeCol(2);
+        opp.transposeCol(0);
+        right.counterClockwiseTwist();
+    }
+
+    /**
+     * <h2>lMove() method</h2>
+     *
+     * <p>This method turns the left face clockwise by 90 degrees.</p>
+     */
+    public void lMove()
+    {
+        curr.swapCol(0,top);
+        top.swapCol(0,2,opp);
+        opp.swapCol(2,0,bottom);
+        top.transposeCol(0);
+        opp.transposeCol(2);
+        left.clockwiseTwist();
+    }
+
+    /**
+     * <h2>lPrimeMove() method</h2>
+     *
+     * <p>This method turns the left face counter-clockwise by 90 degrees.</p>
+     */
+    public void lPrimeMove()
+    {
+        bottom.swapCol(0,curr);
+        opp.swapCol(2,0,bottom);
+        top.swapCol(0,2,opp);
+        bottom.transposeCol(0);
+        opp.transposeCol(2);
+        left.counterClockwiseTwist();
+    }
+
+    /**
+     * <h2>fMove() method</h2>
+     *
+     * <p>This method turns the front face clockwise by 90 degrees.</p>
+     */
+    public void fMove()
+    {
+        top.swapRowCol(2,2,left);
+        bottom.swapRowCol(0,2,left);
+        bottom.swapRowCol(0,0,right);
+
+        bottom.transposeRow(0);
+        top.transposeRow(2);
+        curr.clockwiseTwist();
+    }
+
+    /**
+     * <h2>fPrimeMove() method</h2>
+     *
+     * <p>This method turns the front face counter-clockwise by 90 degrees.</p>
+     */
+    public void fPrimeMove()
+    {
+        top.swapRowCol(2,2,left);
+        top.swapRowCol(2,0,right);
+        bottom.swapRowCol(0,0,right);
+
+
+       left.transposeCol(2);
+       right.transposeCol(0);
+       curr.counterClockwiseTwist();
+    }
+
+    /**
+     * <h2>bMove() method</h2>
+     *
+     * <p>This method turns the back face clockwise by 90 degrees.</p>
+     */
+    public void bMove()
+    {
+        top.swapRowCol(0,0,left);
+        top.swapRowCol(0,2,right);
+        bottom.swapRowCol(2,2,right);
+
+        left.transposeCol(0);
+        right.transposeCol(2);
+        opp.clockwiseTwist();
+    }
+
+    /**
+     * <h2>bPrimeMove() method</h2>
+     *
+     * <p>This method turns the back face counter-clockwise by 90 degrees.</p>
+     */
+    public void bPrimeMove()
+    {
+        top.swapRowCol(0,0,left);
+        bottom.swapRowCol(2,0,left);
+        bottom.swapRowCol(2,2,right);
+
+        bottom.transposeRow(2);
+        top.transposeRow(0);
+        opp.counterClockwiseTwist();
+    }
+
+    /**
+     * <h2>uMove() method</h2>
+     *
+     * <p>This method turns the upward face clockwise by 90 degrees.</p>
+     */
+    public void uMove()
+    {
+        curr.swapRow(0,right);
+        right.swapRow(0,opp);
+        opp.swapRow(0,left);
+        top.clockwiseTwist();
+
+    }
+
+    /**
+     * <h2>uPrimeMove() method</h2>
+     *
+     * <p>This method turns the upward face counter-clockwise by 90 degrees.</p>
+     */
+    public void uPrimeMove()
+    {
+        curr.swapRow(0,left);
+        left.swapRow(0,opp);
+        opp.swapRow(0,right);
+        top.counterClockwiseTwist();
+    }
+
+    /**
+     * <h2>dMove() method</h2>
+     *
+     * <p>This method turns the downward face clockwise by 90 degrees.</p>
+     */
+    public void dMove()
+    {
+        curr.swapRow(2,left);
+        left.swapRow(2,opp);
+        opp.swapRow(2,right);
+        bottom.clockwiseTwist();
+    }
+
+    /**
+     * <h2>dPrimeMove() method</h2>
+     *
+     * <p>This method turns the downward face counter-clockwise by 90 degrees.</p>
+     */
+    public void dPrimeMove()
+    {
+        curr.swapRow(2,right);
+        right.swapRow(2,opp);
+        opp.swapRow(2,left);
+        bottom.counterClockwiseTwist();
     }
 
     /**
@@ -188,18 +381,18 @@ public class Cube {
         /**
          * <h2>solidFace() method</h2>
          *
-         * <p>This method solidly colors the face of the cube with col as the color.</p>
+         * <p>This method solidly colors the face of the cube with an integer representing the color.</p>
          *
-         * @param col col is the color in which the solid face will be colored
+         * @param color color is the color in which the solid face will be colored
          */
-        private void solidFace(int col)
+        private void solidFace(int color)
         {
-            if(col > 6)
-                col = (int)(Math.random() * 6);
+            if(color > 6)
+                color = (int)(Math.random() * 6);
             colors = new int[xDim][yDim];
             for(int x = 0; x < colors.length; x++)
                 for(int y = 0; y < colors[0].length; y++)
-                    colors[x][y] = col;
+                    colors[x][y] = color;
         }
 
         /**
@@ -229,6 +422,173 @@ public class Cube {
                 cy = 0;
             }
         }
+
+        /**
+         * <h2>swapRow() method</h2>
+         *
+         * <h>This method swaps the specified row between this face and the specified face.</h>
+         *
+         * @param rowNum row index to swap
+         * @param otherFace the face that this face will swap rows with
+         */
+        public void swapRow(int rowNum, Face otherFace)
+        {
+            for(int i = 0; i < xDim; i++)
+            {
+                int temp = colors[i][rowNum];
+                colors[i][rowNum] = otherFace.colors[i][rowNum];
+                otherFace.colors[i][rowNum] = temp;
+            }
+        }
+
+        /**
+         * <h2>swapRow() method</h2>
+         *
+         * <h>This method swaps two different rows of between this face and the specified face.</h>
+         *
+         * @param rowNum row index of this face
+         * @param otherRow row index of other face
+         * @param otherFace the face that this face will swap rows with
+         */
+        public void swapRow(int rowNum, int otherRow, Face otherFace)
+        {
+            for(int i = 0; i < xDim; i++)
+            {
+                int temp = colors[i][rowNum];
+                colors[i][rowNum] = otherFace.colors[i][otherRow];
+                otherFace.colors[i][otherRow] = temp;
+            }
+        }
+
+        /**
+         * <h2>swapCol() method</h2>
+         *
+         * <h>This method swaps the specified column between this face and the specified face.</h>
+         *
+         * @param colNum column index to swap
+         * @param otherFace the face that this face will swap columns with
+         */
+        public void swapCol(int colNum, Face otherFace)
+        {
+            for(int i = 0; i < yDim; i++)
+            {
+                int temp = colors[colNum][i];
+                colors[colNum][i] = otherFace.colors[colNum][i];
+                otherFace.colors[colNum][i] = temp;
+            }
+        }
+
+        /**
+         * <h2>swapCol() method</h2>
+         *
+         * <h>This method swaps two different columns of between this face and the specified face.</h>
+         *
+         * @param colNum column index of this face
+         * @param otherCol column index of other face
+         * @param otherFace the face that this face will swap columns with
+         */
+        public void swapCol(int colNum, int otherCol, Face otherFace)
+        {
+            for(int i = 0; i < yDim; i++)
+            {
+                int temp = colors[colNum][i];
+                colors[colNum][i] = otherFace.colors[otherCol][i];
+                otherFace.colors[otherCol][i] = temp;
+            }
+        }
+
+        /**
+         * <h2>swapRowCol() method</h2>
+         *
+         * <p>This method swaps the specified row of this face with the specified column of the other face.</p>
+         *
+         * @param rowNum row index of this face
+         * @param otherCol column index of other face
+         * @param otherFace the face that will be swap it's column with the row
+         */
+        public void swapRowCol(int rowNum, int otherCol,Face otherFace)
+        {
+            for(int i = 0; i < yDim; i++)
+            {
+                int temp = colors[i][rowNum];
+                colors[i][rowNum] = otherFace.colors[otherCol][i];
+                otherFace.colors[otherCol][i] = temp;
+            }
+        }
+
+        /**
+         * <h2>transposeRow()method</h2>
+         *
+         * <p>This method transposes the given row of the face.</p>
+         *
+         * @param rowNum row number to be transposed
+         */
+        public void transposeRow(int rowNum)
+        {
+            int temp = colors[0][rowNum];
+            colors[0][rowNum] = colors[2][rowNum];
+            colors[2][rowNum] = temp;
+        }
+
+        /**
+         * <h2>transposeCol()method</h2>
+         *
+         * <p>This method transposes the given column of the face.</p>
+         *
+         * @param colNum column number to be transposed
+         */
+        public void transposeCol(int colNum)
+        {
+            int temp = colors[colNum][0];
+            colors[colNum][0] = colors[colNum][2];
+            colors[colNum][2] = temp;
+        }
+
+
+        /**
+         * <h2>clockwiseTwist() method</h2>
+         *
+         * <p>This method twists all the corners and edges of the face clockwise.</p>
+         */
+        public void clockwiseTwist()
+        {
+            int temp = colors[0][0];
+            //flip corners
+            colors[0][0] = colors[0][2];
+            colors[0][2] = colors[2][2];
+            colors[2][2] = colors[2][0];
+            colors[2][0] = temp;
+
+            //flip centers
+            temp = colors[1][0];
+            colors[1][0] = colors[0][1];
+            colors[0][1] = colors[1][2];
+            colors[1][2] = colors[2][1];
+            colors[2][1] = temp;
+        }
+
+        /**
+         * <h2>counterClockwiseTwist() method</h2>
+         *
+         * <p>This method twists all the corners and edges of the face counter-clockwise.</p>
+         */
+        public void counterClockwiseTwist()
+        {
+            int temp = colors[0][0];
+            //flip corners
+            colors[0][0] = colors[2][0];
+            colors[2][0] = colors[2][2];
+            colors[2][2] = colors[0][2];
+            colors[0][2] = temp;
+
+            //flip centers
+            temp = colors[1][0];
+            colors[1][0] = colors[2][1];
+            colors[2][1] = colors[1][2];
+            colors[1][2] = colors[0][1];
+            colors[0][1] = temp;
+        }
+
     }
 
     /**

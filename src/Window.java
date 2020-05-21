@@ -19,16 +19,17 @@ import javafx.stage.Stage;
  *
  * <p>This class controls the window and user interfacing aspects of the application.</p>
  *
- * @version 0.0.4
+ * @version 0.0.5
  * <p>created: 4/24/19</p>
- * <p>updated: 5/19/20</p>
+ * <p>updated: 5/21/20</p>
  * @author Lauryn Jefferson
  */
 public class Window extends Application {
 
     //objects
     private Cube c;
-    private Button left, right, top, bottom;
+    private Button x, xprime, y, yprime, z, zprime;//cube rotation buttons
+    private Button r, rprime, l, lprime, f, fprime, b, bprime, u, uprime, d, dprime;//face rotation buttons
 
     /**
      * <h2>Window() default constructor</h2>
@@ -39,11 +40,40 @@ public class Window extends Application {
         //used for the launch of Application
         c = new Cube();
 
-        //face turning buttons
-        left = new Button("Left");
-        right = new Button("Right");
-        top = new Button("Top");
-        bottom = new Button("Bottom");
+        //cube rotation buttons
+        x = new Button("x");
+        xprime = new Button("x'");
+
+        y = new Button("y");
+        yprime = new Button("y'");
+
+        z = new Button("z");
+        zprime = new Button("z'");
+
+
+
+        //face rotation buttons
+        r = new Button("r");
+        rprime = new Button("r'");
+
+        l = new Button("l");
+        lprime = new Button("l'");
+
+        f = new Button("f");
+        fprime = new Button("f'");
+
+        b = new Button("b");
+        bprime = new Button("b'");
+
+        uprime = new Button("u'");
+        u = new Button("u ");
+
+        d = new Button("d");
+        dprime = new Button("d'");
+
+        //wide turns
+
+
     }
 
     /**
@@ -78,38 +108,133 @@ public class Window extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         render(gc);
 
-        //face turning buttons
-        left = new Button("Left");
-        right = new Button("Right");
-        top = new Button("Top");
-        bottom = new Button("Bottom");
-        left.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                c.yPrimeMove();
-            }
-        });
 
-        right.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                c.yMove();
-            }
-        });
-
-        top.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                c.xPrimeMove();
-            }
-        });
-
-        bottom.setOnAction(new EventHandler<ActionEvent>() {
+        //set button event handlers
+        x.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 c.xMove();
             }
         });
 
+        xprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                c.xPrimeMove();
+            }
+        });
+
+        y.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                c.yMove();
+            }
+        });
+
+        yprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                c.yPrimeMove();
+            }
+        });
+
+        z.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.zMove();
+            }
+        });
+
+        zprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.zPrimeMove();
+            }
+        });
+
+        r.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.rMove();
+            }
+        });
+
+        rprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.rPrimeMove();
+            }
+        });
+
+        l.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.lMove();
+            }
+        });
+
+        lprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.lPrimeMove();
+            }
+        });
+
+        f.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.fMove();
+            }
+        });
+
+        fprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.fPrimeMove();
+            }
+        });
+
+        b.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.bMove();
+            }
+        });
+
+        bprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.bPrimeMove();
+            }
+        });
+
+        u.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.uMove();
+            }
+        });
+
+        uprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.uPrimeMove();
+            }
+        });
+
+        d.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.dMove();
+            }
+        });
+
+        dprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.dPrimeMove();
+            }
+        });
+
         //add the buttons and canvas to the window
         root.getChildren().add(canvas);
-        hBox.getChildren().addAll(left,right,top,bottom);
+        hBox.getChildren().addAll(yprime, y, xprime,x,r,rprime,l,lprime,f,fprime,b,bprime,u,uprime,d,dprime);
         root.getChildren().add(hBox);
         primaryStage.setScene(new Scene(root));
         new AnimationTimer()
