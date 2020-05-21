@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
  *
  * <p>This is the cube class in which we will virtually represent the cube.</p>
  *
- * @version 0.0.5
+ * @version 0.0.6
  * <p>created: 4/24/19</p>
  * <p>updated: 5/21/20</p>
  * @author Lauryn Jefferson
@@ -589,6 +589,23 @@ public class Cube {
             colors[0][1] = temp;
         }
 
+        /**
+         * <h2>isSolid() method</h2>
+         *
+         * <p>This method checks to see if the face is one solid color.</p>
+         *
+         * @return whether the face is solid
+         */
+        public boolean isSolid()
+        {
+            int color = colors[0][0];
+            for(int i = 0; i < xDim; i++)
+                for(int j = 0; j < yDim; j++)
+                    if(color != colors[i][j])
+                        return false;
+            return true;
+        }
+
     }
 
     /**
@@ -616,5 +633,17 @@ public class Cube {
         top.drawFace(gc, currStartX, currStartY - faceLength - padding*2);
         bottom.drawFace(gc, currStartX, currStartY + faceLength + padding*2);
 
+    }
+
+    /**
+     * <h2>isSolved() method</h2>
+     *
+     * <p>This method checks if all the sides are one solid color to determine whether the cube is solved.</p>
+     *
+     * @return whether the cube is solved
+     */
+    public boolean isSolved()
+    {
+        return curr.isSolid() && top.isSolid() && bottom.isSolid() && left.isSolid() && right.isSolid() && opp.isSolid();
     }
 }

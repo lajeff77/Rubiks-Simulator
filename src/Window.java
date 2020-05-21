@@ -11,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -19,7 +20,7 @@ import javafx.stage.Stage;
  *
  * <p>This class controls the window and user interfacing aspects of the application.</p>
  *
- * @version 0.0.5
+ * @version 0.0.6
  * <p>created: 4/24/19</p>
  * <p>updated: 5/21/20</p>
  * @author Lauryn Jefferson
@@ -30,6 +31,10 @@ public class Window extends Application {
     private Cube c;
     private Button x, xprime, y, yprime, z, zprime;//cube rotation buttons
     private Button r, rprime, l, lprime, f, fprime, b, bprime, u, uprime, d, dprime;//face rotation buttons
+    private Label solved;
+
+    private final String SOLVED = "State: Solved";
+    private final String UNSOLVED = "State: Unsolved";
 
     /**
      * <h2>Window() default constructor</h2>
@@ -71,9 +76,12 @@ public class Window extends Application {
         d = new Button("d");
         dprime = new Button("d'");
 
-        //wide turns
+        //wide turn buttons
 
+        //slice move buttons
 
+        //solved label
+        solved = new Label(SOLVED);
     }
 
     /**
@@ -234,13 +242,15 @@ public class Window extends Application {
 
         //add the buttons and canvas to the window
         root.getChildren().add(canvas);
-        hBox.getChildren().addAll(yprime, y, xprime,x,r,rprime,l,lprime,f,fprime,b,bprime,u,uprime,d,dprime);
+        hBox.getChildren().addAll(x,xprime,y,yprime,z,zprime,r,rprime,l,lprime,f,fprime,b,bprime,u,uprime,d,dprime,solved);
         root.getChildren().add(hBox);
         primaryStage.setScene(new Scene(root));
         new AnimationTimer()
         {
             public void handle(long currentNanoTime)
             {
+                //do updates
+                update();
                 // Clear the canvas
                 gc.clearRect(0, 0, 512,512);
                 c.render(gc);
@@ -261,4 +271,15 @@ public class Window extends Application {
         c.render(gc);
     }
 
+    /**
+     *
+     */
+    public void update()
+    {
+        //check state of cube
+        if(c.isSolved())
+            solved.setText(SOLVED);
+        else
+            solved.setText(UNSOLVED);
+    }
 }
