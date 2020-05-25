@@ -20,9 +20,9 @@ import javafx.stage.Stage;
  *
  * <p>This class controls the window and user interfacing aspects of the application.</p>
  *
- * @version 0.0.6
+ * @version 0.0.7
  * <p>created: 4/24/19</p>
- * <p>updated: 5/21/20</p>
+ * <p>updated: 5/25/20</p>
  * @author Lauryn Jefferson
  */
 public class Window extends Application {
@@ -31,6 +31,9 @@ public class Window extends Application {
     private Cube c;
     private Button x, xprime, y, yprime, z, zprime;//cube rotation buttons
     private Button r, rprime, l, lprime, f, fprime, b, bprime, u, uprime, d, dprime;//face rotation buttons
+    private Button m,s,e, mprime, sprime, eprime;//slice move buttons
+    private Button rw, rwprime, lw, lwprime, fw, fwprime,bw, bwprime, uw, uwprime, dw, dwprime;//wide move buttons
+
     private Label solved;
 
     private final String SOLVED = "State: Solved";
@@ -70,15 +73,40 @@ public class Window extends Application {
         b = new Button("b");
         bprime = new Button("b'");
 
+        u = new Button("u");
         uprime = new Button("u'");
-        u = new Button("u ");
 
         d = new Button("d");
         dprime = new Button("d'");
 
-        //wide turn buttons
-
         //slice move buttons
+        m = new Button("m");
+        mprime = new Button("m'");
+
+        e = new Button("e");
+        eprime = new Button("e'");
+
+        s = new Button("s");
+        sprime = new Button("s'");
+
+        // wide turn buttons
+        rw = new Button("rw");
+        rwprime = new Button("rw'");
+
+        lw = new Button("lw");
+        lwprime = new Button("lw'");
+
+        fw = new Button("fw");
+        fwprime = new Button("fw'");
+
+        bw = new Button("bw");
+        bwprime = new Button("bw'");
+
+        uw = new Button("uw");
+        uwprime = new Button("uw'");
+
+        dw = new Button("dw");
+        dwprime = new Button("dw'");
 
         //solved label
         solved = new Label(SOLVED);
@@ -240,9 +268,135 @@ public class Window extends Application {
             }
         });
 
+        m.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.mMove();
+            }
+        });
+
+        mprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.mPrimeMove();
+            }
+        });
+
+        e.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.eMove();
+            }
+        });
+
+        eprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.ePrimeMove();
+            }
+        });
+
+        s.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.sMove();
+            }
+        });
+
+        sprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.sPrimeMove();
+            }
+        });
+
+        rw.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.rwMove();
+            }
+        });
+
+        rwprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.rwPrimeMove();
+            }
+        });
+
+        lw.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.lwMove();
+            }
+        });
+
+        lwprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.lwPrimeMove();
+            }
+        });
+
+        fw.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.fwMove();
+            }
+        });
+
+        fwprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.fwPrimeMove();
+            }
+        });
+
+        bw.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.bwMove();
+            }
+        });
+
+        bwprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.bwPrimeMove();
+            }
+        });
+
+        uw.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.uwMove();
+            }
+        });
+
+        uwprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.uwPrimeMove();
+            }
+        });
+
+        dw.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.dwMove();
+            }
+        });
+
+        dwprime.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.dwPrimeMove();
+            }
+        });
+
         //add the buttons and canvas to the window
         root.getChildren().add(canvas);
-        hBox.getChildren().addAll(x,xprime,y,yprime,z,zprime,r,rprime,l,lprime,f,fprime,b,bprime,u,uprime,d,dprime,solved);
+        hBox.getChildren().addAll(x,xprime,y,yprime,z,zprime,r,rprime,l,lprime,f,fprime,b,bprime,u,uprime,d,dprime,m,mprime,e,eprime,s,sprime,rw,rwprime,lw,lwprime,fw,fwprime,bw,bwprime,uw,uwprime,dw,dwprime,solved);
         root.getChildren().add(hBox);
         primaryStage.setScene(new Scene(root));
         new AnimationTimer()

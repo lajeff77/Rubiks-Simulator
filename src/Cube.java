@@ -6,9 +6,9 @@ import javafx.scene.paint.Color;
  *
  * <p>This is the cube class in which we will virtually represent the cube.</p>
  *
- * @version 0.0.6
+ * @version 0.0.7
  * <p>created: 4/24/19</p>
- * <p>updated: 5/21/20</p>
+ * <p>updated: 5/25/20</p>
  * @author Lauryn Jefferson
  */
 public class Cube {
@@ -153,6 +153,11 @@ public class Cube {
         bottom = right;
         right = top;
         top = temp;
+
+        left.clockwiseTwist();
+        bottom.clockwiseTwist();
+        right.clockwiseTwist();
+        top.clockwiseTwist();
     }
 
     /**
@@ -166,6 +171,11 @@ public class Cube {
         top = right;
         right = bottom;
         bottom = temp;
+
+        left.counterClockwiseTwist();
+        bottom.counterClockwiseTwist();
+        right.counterClockwiseTwist();
+        top.counterClockwiseTwist();
     }
 
     /**
@@ -343,6 +353,210 @@ public class Cube {
         right.swapRow(2,opp);
         opp.swapRow(2,left);
         bottom.counterClockwiseTwist();
+    }
+
+    /**
+     * <h2>mMove() method</h2>
+     *
+     * <p>This method slices the middle layer 90 degrees clockwise in the x direction.</p>
+     */
+    public void mMove()
+    {
+        rMove();
+        lPrimeMove();
+        xPrimeMove();
+    }
+
+    /**
+     * <h2>mPrimeMove() method</h2>
+     *
+     * <p>This method slices the middle layer 90 degrees counter-clockwise in the x direction.</p>
+     */
+    public void mPrimeMove()
+    {
+        rPrimeMove();
+        lMove();
+        xMove();
+    }
+
+    /**
+     * <h2>eMove() method</h2>
+     *
+     * <p>This method slices the middle layer 90 degrees clockwise in the y direction.</p>
+     */
+    public void eMove()
+    {
+        uMove();
+        dPrimeMove();
+        yPrimeMove();
+    }
+
+    /**
+     * <h2>ePrimeMove() method</h2>
+     *
+     * <p>This method slices the middle layer 90 degrees counter-clockwise in the y direction.</p>
+     */
+    public void ePrimeMove()
+    {
+        uPrimeMove();
+        dMove();
+        yMove();
+    }
+
+    /**
+     * <h2>sMove() method</h2>
+     *
+     * <p>This method slices the middle layer 90 degrees clockwise in the z direction.</p>
+     */
+    public void sMove()
+    {
+        fPrimeMove();
+        bMove();
+        zMove();
+    }
+
+    /**
+     * <h2>sPrimeMove() method</h2>
+     *
+     * <p>This method slices the middle layer 90 degrees counter-clockwise in the z direction.</p>
+     */
+    public void sPrimeMove()
+    {
+        fMove();
+        bPrimeMove();
+        zPrimeMove();
+    }
+
+    /**
+     * <h2>rwMove() method</h2>
+     *
+     * <p>This method turns the right face and middle layer clockwise by 90 degrees.</p>
+     */
+    public void rwMove()
+    {
+        lMove();
+        xMove();
+    }
+
+    /**
+     * <h2>rwPrimeMove() method</h2>
+     *
+     * <p>This method turns the right face and middle layer counter-clockwise by 90 degrees.</p>
+     */
+    public void rwPrimeMove()
+    {
+        lPrimeMove();
+        xPrimeMove();
+    }
+
+    /**
+     * <h2>lwMove() method</h2>
+     *
+     * <p>This method turns the left face and middle layer clockwise by 90 degrees.</p>
+     */
+    public void lwMove()
+    {
+        rMove();
+        xPrimeMove();
+    }
+
+    /**
+     * <h2>lwPrimeMove() method</h2>
+     *
+     * <p>This method turns the left face and middle layer counter-clockwise by 90 degrees.</p>
+     */
+    public void lwPrimeMove()
+    {
+        rPrimeMove();
+        xMove();
+    }
+
+    /**
+     * <h2>fwMove() method</h2>
+     *
+     * <p>This method turns the front face and middle layer clockwise by 90 degrees.</p>
+     */
+    public void fwMove()
+    {
+        bMove();
+        zMove();
+    }
+
+    /**
+     * <h2>fwPrimeMove() method</h2>
+     *
+     * <p>This method turns the front face and middle layer counter-clockwise by 90 degrees.</p>
+     */
+    public void fwPrimeMove()
+    {
+        bPrimeMove();
+        zPrimeMove();
+    }
+
+    /**
+     * <h2>bwMove() method</h2>
+     *
+     * <p>This method turns the back face and middle layer clockwise by 90 degrees.</p>
+     */
+    public void bwMove()
+    {
+        fMove();
+        zPrimeMove();
+    }
+
+    /**
+     * <h2>bwPrimeMove() method</h2>
+     *
+     * <p>This method turns the back face and middle layer counter-clockwise by 90 degrees.</p>
+     */
+    public void bwPrimeMove()
+    {
+        fPrimeMove();
+        zMove();
+    }
+
+    /**
+     * <h2>uwMove() method</h2>
+     *
+     * <p>This method turns the upward face and middle layer clockwise by 90 degrees.</p>
+     */
+    public void uwMove()
+    {
+        dMove();
+        yMove();
+    }
+
+    /**
+     * <h2>uwPrimeMove() method</h2>
+     *
+     * <p>This method turns the upward face and middle layer counter-clockwise by 90 degrees.</p>
+     */
+    public void uwPrimeMove()
+    {
+        dPrimeMove();
+        yPrimeMove();
+    }
+
+    /**
+     * <h2>dwMove() method</h2>
+     *
+     * <p>This method turns the downward face and middle layer clockwise by 90 degrees.</p>
+     */
+    public void dwMove()
+    {
+        uMove();
+        yPrimeMove();
+    }
+
+    /**
+     * <h2>dwPrimeMove() method</h2>
+     *
+     * <p>This method turns the downward face and middle layer counter-clockwise by 90 degrees.</p>
+     */
+    public void dwPrimeMove()
+    {
+        uPrimeMove();
+        yMove();
     }
 
     /**
