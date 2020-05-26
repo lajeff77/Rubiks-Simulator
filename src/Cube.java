@@ -1,20 +1,25 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
 /**
  * <h1>Cube Class</h1>
  *
  * <p>This is the cube class in which we will virtually represent the cube.</p>
  *
- * @version 0.0.7
+ * @version 0.0.8
  * <p>created: 4/24/19</p>
- * <p>updated: 5/25/20</p>
+ * <p>updated: 5/26/20</p>
  * @author Lauryn Jefferson
  */
 public class Cube {
 
     //constants
     private final Color[] COLORS = {Color.WHITE, Color.ORANGE, Color.GREEN, Color.YELLOW, Color.RED, Color.BLUE};
+    private final long animTime = 1000;//one second
     //variables
     private double cWidth, cHeight;
     private int xDim, yDim;
@@ -23,9 +28,12 @@ public class Cube {
     private int faceCount;
     private double faceWidth, faceLength;
     private double cubieWidth, cubieHeight;
+    private boolean executing;
+    private long moveStart;
 
     //objects
     private Face curr, left, right, top, bottom, opp;//nodes to represent orientation of the cube
+    private Queue<String> moveQueue;
 
     /**
      * <h2>Cube() constructor</h2>
@@ -44,14 +52,12 @@ public class Cube {
         cubieWidth = (cWidth / xDim);
         cubieHeight = (cHeight / yDim);
 
+        executing = false;
+        moveQueue = new LinkedList<>();
+
 
         //set all the face nodes
-        curr = new Face(2);
-        left = new Face(1);
-        right = new Face(4);
-        top = new Face(0);
-        bottom = new Face(3);
-        opp = new Face(5);
+        reset();
     }
 
     /**
@@ -859,5 +865,263 @@ public class Cube {
     public boolean isSolved()
     {
         return curr.isSolid() && top.isSolid() && bottom.isSolid() && left.isSolid() && right.isSolid() && opp.isSolid();
+    }
+
+    /**
+     * <h2>reset() method</h2>
+     *
+     * <p>This method resets the cube into a solved state.</p>
+     */
+    public void reset()
+    {
+        curr = new Face(2);
+        left = new Face(1);
+        right = new Face(4);
+        top = new Face(0);
+        bottom = new Face(3);
+        opp = new Face(5);
+    }
+
+    /**
+     * <h2>executeAlgorithm()</h2>
+     *
+     * <p>This method takes a string representing an algorithm and executes it move by move.</p>
+     *
+     * @param alg a string representing the algorithm
+     */
+    public void executeAlgorithm(String alg)
+    {
+        //set up tokenizer
+        String delimiters = ", ";
+        StringTokenizer tokenizer = new StringTokenizer(alg,delimiters);
+        executing = true;
+
+        //tokenize the algorithm
+        while(tokenizer.hasMoreElements()){
+            String temp = tokenizer.nextToken();
+            if(!temp.equals(""))
+            {
+                if(temp.contains("2"))
+                {
+                    temp = temp.replace("2","");
+                    moveQueue.add(temp);
+                    moveQueue.add(temp);
+                }
+                else
+                    moveQueue.add(temp);
+            }
+        }
+
+        //animate the first move
+        moveStart = System.currentTimeMillis();
+        if(moveQueue.size() > 0)
+            decideMove(moveQueue.remove());
+    }
+
+    /**
+     * <h2>pauseExecution() method</h2>
+     *
+     * <p>This method pauses the execution of the algorithm entered without clearing it.</p>
+     */
+    public void pauseExecution()
+    {
+        executing = false;
+    }
+
+    /**
+     * <h2>resumeExecution() method</h2>
+     *
+     * <p>This method resumes the exexcution of an algorithm after it's been paused.</p>
+     */
+    public void resumeExecution()
+    {
+        executing = true;
+    }
+
+    /**
+     * <h2>stopExecution() method</h2>
+     *
+     * <p>This method stops the execution of the algorithm and clears it.</p>
+     */
+    public void stopExecution()
+    {
+        moveQueue.clear();
+        executing = false;
+    }
+
+    /**
+     * <h2>isExecuting() method</h2>
+     *
+     * <p>This method returns true if the cube is executing an algorithm and false if it isn't.</p>
+     *
+     * @return boolean representing execution
+     */
+    public boolean isExecuting()
+    {
+        return executing;
+    }
+
+    /**
+     * <h2>hasMovesToExecute()</h2>
+     *
+     * <p>This method returns true if there are more moves left to be executed and false if there are no moves to be executed.</p>
+     *
+     * @return whether there are moves to execute left
+     */
+    public boolean hasMovesToExecute()
+    {
+        return moveQueue.size()>0;
+    }
+
+    /**
+     * <h2>update() method</h2>
+     *
+     * <p>This method updates the status of the cube.</p>
+     */
+    public void update()
+    {
+        if(executing)
+        {
+            if(moveQueue.size() == 0)
+            {
+                //no moves left
+                executing = false;
+            }
+            else
+            {
+                //still moves
+                if(System.currentTimeMillis() - moveStart > animTime)
+                {
+                    //next move
+                    decideMove(moveQueue.remove());
+                    moveStart = System.currentTimeMillis();
+                }
+            }
+
+        }
+    }
+
+    /**
+     * <h2>decideMove() method</h2>
+     *
+     * <p>This method is a helper method that chooses a move based off of the given string/</p>
+     * @param move string dictating what move to perform
+     */
+    private void decideMove(String move)
+    {
+        switch(move)
+        {
+            case("R"):
+                rMove();
+                break;
+            case("R'"):
+                rPrimeMove();
+                break;
+            case("L"):
+                lMove();
+                break;
+            case("L'"):
+                lPrimeMove();
+                break;
+            case("F"):
+                fMove();
+                break;
+            case("F'"):
+                fPrimeMove();
+                break;
+            case("B"):
+                bMove();
+                break;
+            case("B'"):
+                bPrimeMove();
+                break;
+            case("U"):
+                uMove();
+                break;
+            case("U'"):
+                uPrimeMove();
+                break;
+            case("D"):
+                dMove();
+                break;
+            case("D'"):
+                dPrimeMove();
+                break;
+            case("X"):
+                xMove();
+                break;
+            case("X'"):
+                xPrimeMove();
+                break;
+            case("Y"):
+                yMove();
+                break;
+            case("Y'"):
+                yPrimeMove();
+                break;
+            case("Z"):
+                zMove();
+                break;
+            case("Z'"):
+                zPrimeMove();
+                break;
+            case("M"):
+                mMove();
+                break;
+            case("M'"):
+                mPrimeMove();
+                break;
+            case("E"):
+                eMove();
+                break;
+            case("E'"):
+                ePrimeMove();
+                break;
+            case("S"):
+                sMove();
+                break;
+            case("S'"):
+                sPrimeMove();
+                break;
+            case("r"):
+                rwMove();
+                break;
+            case("r'"):
+                rwPrimeMove();
+                break;
+            case("l"):
+                lwMove();
+                break;
+            case("l'"):
+                lwPrimeMove();
+                break;
+            case("f"):
+                fwMove();
+                break;
+            case("f'"):
+                fwPrimeMove();
+                break;
+            case("b"):
+                bwMove();
+                break;
+            case("b'"):
+                bwPrimeMove();
+                break;
+            case("u"):
+                uwMove();
+                break;
+            case("u'"):
+                uwPrimeMove();
+                break;
+            case("d"):
+                dwMove();
+                break;
+            case("d'"):
+                dwPrimeMove();
+                break;
+            default:
+                System.out.println("Erroneous letter: " + move);
+                break;
+        }
     }
 }

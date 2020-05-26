@@ -12,29 +12,48 @@ import javafx.scene.canvas.GraphicsContext;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * <h1>Window Class</h1>
  *
  * <p>This class controls the window and user interfacing aspects of the application.</p>
  *
- * @version 0.0.7
+ * @version 0.0.8
  * <p>created: 4/24/19</p>
- * <p>updated: 5/25/20</p>
+ * <p>updated: 5/26/20</p>
  * @author Lauryn Jefferson
  */
 public class Window extends Application {
 
     //objects
     private Cube c;
+
+    private HBox cRotations, fRotations, slices, wides, solveState, algoField;
+    private VBox buttons;
+    private BorderPane cubePane;
+
+    private ArrayList<Button> allButtons;
     private Button x, xprime, y, yprime, z, zprime;//cube rotation buttons
     private Button r, rprime, l, lprime, f, fprime, b, bprime, u, uprime, d, dprime;//face rotation buttons
     private Button m,s,e, mprime, sprime, eprime;//slice move buttons
     private Button rw, rwprime, lw, lwprime, fw, fwprime,bw, bwprime, uw, uwprime, dw, dwprime;//wide move buttons
 
+    private Label cRotLabel, fRotLabel, sliceLabel,widesLabel;
     private Label solved;
+
+    private TextField algortihmField;
+    private Button execute,pause,resume,stop;
+
+    private Button reset;
 
     private final String SOLVED = "State: Solved";
     private final String UNSOLVED = "State: Unsolved";
@@ -48,6 +67,35 @@ public class Window extends Application {
         //used for the launch of Application
         c = new Cube();
 
+        //set up layout boxes
+        cRotations = new HBox();
+        fRotations = new HBox();
+        slices = new HBox();
+        wides = new HBox();
+        solveState = new HBox();
+        algoField = new HBox();
+        buttons = new VBox();
+        cubePane = new BorderPane();
+
+        //add padding and space to the layout boxes
+        cRotations.setPadding(new Insets(15, 12, 15, 12));
+        cRotations.setSpacing(10);
+
+        fRotations.setPadding(new Insets(15, 12, 15, 12));
+        fRotations.setSpacing(10);
+
+        slices.setPadding(new Insets(15, 12, 15, 12));
+        slices.setSpacing(10);
+
+        wides.setPadding(new Insets(15, 12, 15, 12));
+        wides.setSpacing(10);
+
+        solveState.setPadding(new Insets(15, 12, 15, 12));
+        solveState.setSpacing(10);
+
+        algoField.setPadding(new Insets(15, 12, 15, 12));
+        algoField.setSpacing(10);
+
         //cube rotation buttons
         x = new Button("x");
         xprime = new Button("x'");
@@ -57,7 +105,6 @@ public class Window extends Application {
 
         z = new Button("z");
         zprime = new Button("z'");
-
 
 
         //face rotation buttons
@@ -108,8 +155,34 @@ public class Window extends Application {
         dw = new Button("dw");
         dwprime = new Button("dw'");
 
+        //group labels
+        cRotLabel = new Label("Cube Rotations");
+        fRotLabel = new Label("Face Rotations");
+        sliceLabel = new Label("Slice Moves");
+        widesLabel = new Label("Wide Face Rotations");
+
         //solved label
         solved = new Label(SOLVED);
+
+        //algorithm text field
+        algortihmField = new TextField();
+        algortihmField.setPromptText("Enter algorithm here");
+
+        //execute control buttons
+        execute = new Button("Execute");
+        resume = new Button("Resume");
+        pause = new Button("Pause");
+        stop = new Button("Stop");
+
+        pause.setDisable(true);
+        stop.setDisable(true);
+
+        //reset button
+        reset = new Button("reset");
+
+        //add all the buttons to the list
+        allButtons = new ArrayList<>();
+        allButtons.addAll(Arrays.asList(x, xprime, y, yprime, z, zprime, r, rprime, rw, rwprime, l, lprime, lw, lwprime, f, fprime, fw, fwprime, b, bprime, bw, bwprime, u, uprime, uw, uwprime, d, dprime, dw, dwprime, m, mprime, e, eprime, s, sprime, execute, reset));
     }
 
     /**
@@ -122,7 +195,6 @@ public class Window extends Application {
     public Window(String[] args) {
         this();
         launch(args);
-
     }
 
     /**
@@ -136,14 +208,9 @@ public class Window extends Application {
         primaryStage.setTitle("Rubik's Simulator");
         Group root = new Group();
 
-        //box for the buttons
-        HBox hBox = new HBox();
-        hBox.setPadding(new Insets(15, 12, 15, 12));
-        hBox.setSpacing(10);
         Canvas canvas = new Canvas(1000, 700);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         render(gc);
-
 
         //set button event handlers
         x.setOnAction(new EventHandler<ActionEvent>() {
@@ -394,10 +461,63 @@ public class Window extends Application {
             }
         });
 
+        execute.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                disableAllButtons();
+                pause.setDisable(false);
+                stop.setDisable(false);
+                c.executeAlgorithm(algortihmField.getText());
+            }
+        });
+
+        resume.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                disableAllButtons();
+                pause.setDisable(false);
+                stop.setDisable(false);
+                c.resumeExecution();
+            }
+        });
+
+        pause.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                pause.setDisable(true);
+                stop.setDisable(true);
+                c.pauseExecution();
+            }
+        });
+
+        stop.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                pause.setDisable(true);
+                stop.setDisable(true);
+                c.stopExecution();
+            }
+        });
+
+        reset.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                c.reset();
+            }
+        });
+
         //add the buttons and canvas to the window
-        root.getChildren().add(canvas);
-        hBox.getChildren().addAll(x,xprime,y,yprime,z,zprime,r,rprime,l,lprime,f,fprime,b,bprime,u,uprime,d,dprime,m,mprime,e,eprime,s,sprime,rw,rwprime,lw,lwprime,fw,fwprime,bw,bwprime,uw,uwprime,dw,dwprime,solved);
-        root.getChildren().add(hBox);
+
+        cRotations.getChildren().addAll(x,xprime,y,yprime,z,zprime);
+        fRotations.getChildren().addAll(r,rprime,l,lprime,f,fprime,b,bprime,u,uprime,d,dprime);
+        slices.getChildren().addAll(m,mprime,e,eprime,s,sprime);
+        wides.getChildren().addAll(rw,rwprime,lw,lwprime,fw,fwprime,bw,bwprime,uw,uwprime,dw,dwprime);
+        solveState.getChildren().addAll(solved,reset);
+        algoField.getChildren().addAll(algortihmField,execute, pause, resume,stop);
+        buttons.getChildren().addAll(cRotLabel,cRotations,fRotLabel,fRotations,sliceLabel,slices,widesLabel,wides,solveState,algoField);
+        cubePane.setRight(buttons);
+        cubePane.setCenter(canvas);
+        root.getChildren().addAll(cubePane);
         primaryStage.setScene(new Scene(root));
         new AnimationTimer()
         {
@@ -417,7 +537,7 @@ public class Window extends Application {
     /**
      * <h2>render() method</h2>
      *
-     * <p>This method draws everyhting happening in the application to the screen using the JavaFX GraphicsContext object.</p>
+     * <p>This method draws everything happening in the application to the screen using the JavaFX GraphicsContext object.</p>
      *
      * @param gc graphics context of where you want to draw to
      */
@@ -426,14 +546,53 @@ public class Window extends Application {
     }
 
     /**
+     *<h2>update() method</h2>
      *
+     * <p>This method updates the program based on changes happening in the cube.</p>
      */
     public void update()
     {
+        c.update();
         //check state of cube
         if(c.isSolved())
             solved.setText(SOLVED);
         else
             solved.setText(UNSOLVED);
+        if(!c.isExecuting()) {
+            enableAllButtons();
+            stop.setDisable(true);
+            pause.setDisable(true);
+            if(c.hasMovesToExecute())
+                resume.setDisable(false);
+            else
+                resume.setDisable(true);
+        }
+
+    }
+
+    /**
+     * <h2>disableAllButtons() method</h2>
+     *
+     * <p>This method disables all the buttons on the window.</p>
+     */
+    public void disableAllButtons()
+    {
+        for(Button b:allButtons)
+        {
+            b.setDisable(true);
+        }
+    }
+
+    /**
+     * <h2>enableAllButtons() method</h2>
+     *
+     * <p>This method enables all the buttons on the window.</p>
+     */
+    public void enableAllButtons()
+    {
+        for(Button b:allButtons)
+        {
+            b.setDisable(false);
+        }
     }
 }
